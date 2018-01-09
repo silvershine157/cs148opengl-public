@@ -121,7 +121,7 @@ void Assignment2::SetupExample1()
 	glCompileShader(shaderVert);
 	glCompileShader(shaderFrag);
 	
-	GLuint program = glCreateProgram();
+	program = glCreateProgram();
 
 	glAttachShader(program, shaderVert);
 	glAttachShader(program, shaderFrag);
@@ -146,9 +146,25 @@ void Assignment2::SetupExample1()
     // FINISH DO NOT EDIT OR REMOVE THE CODE IN THIS SECTION
 
     // Insert "Setup Buffers" code here.
+	glGenVertexArrays(1, &vertexArray);
+	glBindVertexArray(vertexArray);
+	GLuint buffer;
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+
+	//I don't know what this means...
+	glBufferData(GL_ARRAY_BUFFER, 6*sizeof(glm::vec4), &vertexPositions[0], GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(0);
+
 }
 
 void Assignment2::Tick(double deltaTime)
 {
     // Insert "Send Buffers to the GPU" and "Slightly-More Advanced Shaders" code here.
+
+	glUseProgram(program);
+	glBindVertexArray(vertexArray);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 }

@@ -32,6 +32,10 @@ private:
     std::shared_ptr<class Light> pointLight;
 
     std::vector<glm::vec4> vertexPositions;
+
+	GLuint program;
+	GLuint vertexArray;
+
 };
 
 #endif
