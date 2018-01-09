@@ -3,6 +3,8 @@
 #include "common/Utility/Mesh/Simple/PrimitiveCreator.h"
 #include "common/Utility/Mesh/Loading/MeshLoader.h"
 #include <cmath>
+#include <fstream>
+#include <streambuf>
 
 namespace
 {
@@ -93,9 +95,42 @@ void Assignment2::SetupExample1()
 
     // Checkpoint 1.
     // Modify this part to contain your vertex shader ID, fragment shader ID, and shader program ID.
-    const GLuint vertexShaderId = 0;
-    const GLuint fragmentShaderId = 0;
-    const GLuint shaderProgramId = 0;
+
+	const std::string vertFileName = std::string(STRINGIFY(SHADER_PATH)) + "/hw2/hw2.vert";
+	const std::string fragFileName = std::string(STRINGIFY(SHADER_PATH)) + "/hw2/hw2.frag";
+
+	std::ifstream tVert(vertFileName);
+	std::string vertContent(
+		(std::istreambuf_iterator<char>(tVert)),
+		std::istreambuf_iterator<char>());
+
+	std::ifstream tFrag(fragFileName);
+	std::string fragContent(
+		(std::istreambuf_iterator<char>(tFrag)),
+		std::istreambuf_iterator<char>());
+
+	GLuint shaderVert = glCreateShader(GL_VERTEX_SHADER);
+	GLuint shaderFrag = glCreateShader(GL_FRAGMENT_SHADER);
+	
+	const char * vertString = vertContent.c_str();
+	const char * fragString = fragContent.c_str();
+
+	glShaderSource(shaderVert, 1, &vertString, NULL);
+	glShaderSource(shaderFrag, 1, &fragString, NULL);
+
+	glCompileShader(shaderVert);
+	glCompileShader(shaderFrag);
+	
+	GLuint program = glCreateProgram();
+
+	glAttachShader(program, shaderVert);
+	glAttachShader(program, shaderFrag);
+
+	glLinkProgram(program);
+
+    const GLuint vertexShaderId = shaderVert;
+    const GLuint fragmentShaderId = shaderFrag;
+    const GLuint shaderProgramId = program;
 
     // DO NOT EDIT OR REMOVE THE CODE IN THIS SECTION
     if (!VerifyShaderCompile(vertexShaderId) || !VerifyShaderCompile(fragmentShaderId) || !VerifyProgramLink(shaderProgramId)) {
