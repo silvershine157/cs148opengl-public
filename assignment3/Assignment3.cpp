@@ -163,14 +163,27 @@ void Assignment3::SetupExample2()
     shader->SetDiffuse(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
     shader->SetAmbient(glm::vec4(0.5f));
 
-    std::vector<std::shared_ptr<RenderingObject>> meshTemplate = MeshLoader::LoadMesh(shader, "outlander/Model/Outlander_Model.obj");
-    if (meshTemplate.empty()) {
+    //std::vector<std::shared_ptr<RenderingObject>> meshTemplate = MeshLoader::LoadMesh(shader, "outlander/Model/Outlander_Model.obj");
+	//std::vector<std::shared_ptr<RenderingObject>> meshTemplate = MeshLoader::LoadMesh(shader, "mymodels/logo/EH.obj");
+	std::vector<std::shared_ptr<RenderingObject>> meshTemplate = MeshLoader::LoadMesh(shader, "downloads/cherry_tomato/VG18_1.obj");
+	if (meshTemplate.empty()) {
         std::cerr << "ERROR: Failed to load the model. Check your paths." << std::endl;
         return;
     }
 
+	std::vector<std::shared_ptr<RenderingObject>> meshTemplate_another = MeshLoader::LoadMesh(shader, "mymodels/logo/EH.obj");
+
     sceneObject = std::make_shared<SceneObject>(meshTemplate);
+	sceneObject_another = std::make_shared<SceneObject>(meshTemplate_another);
+
+	sceneObject->Translate(glm::vec3(0,0,3.0));
+
+	sceneObject_another->MultScale(0.1);
+	sceneObject_another->Rotate(glm::vec3(SceneObject::GetWorldUp()), -1.7f);\
+
     scene->AddSceneObject(sceneObject);
+	scene->AddSceneObject(sceneObject_another);
+
 
     std::unique_ptr<LightProperties> lightProperties = make_unique<LightProperties>();
     lightProperties->diffuseColor = glm::vec4(0.5f, 0.5f, 0.5f, 1.f);

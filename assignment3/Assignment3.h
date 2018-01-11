@@ -29,6 +29,7 @@ private:
     virtual void SetupCamera();
 
     std::shared_ptr<class SceneObject> sceneObject;
+	std::shared_ptr<class SceneObject> sceneObject_another;
 
     std::shared_ptr<class Light> pointLight;
 };
