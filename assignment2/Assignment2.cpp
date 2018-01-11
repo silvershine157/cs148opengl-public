@@ -50,6 +50,8 @@ Assignment2::Assignment2(std::shared_ptr<class Scene> inputScene, std::shared_pt
             {-1.f, 1.f, 0.f, 1.f},
             {-1.f, 0.f, 0.f, 1.f}
         });
+
+	time = 0;
 }
 
 std::unique_ptr<Application> Assignment2::CreateApplication(std::shared_ptr<class Scene> scene, std::shared_ptr<class Camera> camera)
@@ -152,8 +154,7 @@ void Assignment2::SetupExample1()
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 
-	//I don't know what this means...
-	glBufferData(GL_ARRAY_BUFFER, 6*sizeof(glm::vec4), &vertexPositions[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * vertexPositions.size(), &vertexPositions[0], GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(0);
@@ -164,7 +165,14 @@ void Assignment2::Tick(double deltaTime)
 {
     // Insert "Send Buffers to the GPU" and "Slightly-More Advanced Shaders" code here.
 
+	time += deltaTime;
+
 	glUseProgram(program);
+
+	GLuint timeLoc = glGetUniformLocation(program, "inputTime");
+	glUniform1f(timeLoc, time);
+
 	glBindVertexArray(vertexArray);
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glDrawArrays(GL_TRIANGLES, 0, vertexPositions.size());
+
 }

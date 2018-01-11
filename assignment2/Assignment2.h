@@ -36,6 +36,8 @@ private:
 	GLuint program;
 	GLuint vertexArray;
 
+	float time;
+
 };
 
 #endif
