@@ -124,10 +124,6 @@ void RenderingObject::SetVertexColors(std::unique_ptr<ColorArray> colors)
     UpdateVertexColors();
 }
 
-void RenderingObject::ReportColors() const{
-	std::cout << "reporting : " << vertexColors->at(0)[2] << std::endl;
-}
-
 void RenderingObject::SetVertexTangents(std::unique_ptr<TangentArray> input)
 {
     vertexTangents = std::move(input);

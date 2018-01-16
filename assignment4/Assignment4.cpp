@@ -111,20 +111,18 @@ void Assignment4::SetupExample1()
     };
 #else
     std::unordered_map<GLenum, std::string> shaderSpec = {
-        { GL_VERTEX_SHADER, "brdf/blinnphong/frag/noSubroutine/epic.vert" },
-        { GL_FRAGMENT_SHADER, "brdf/blinnphong/frag/noSubroutine/epic.frag"}
+        { GL_VERTEX_SHADER, "brdf/blinnphong/frag/noSubroutine/blinnphong.vert" },
+        { GL_FRAGMENT_SHADER, "brdf/blinnphong/frag/noSubroutine/blinnphong.frag"}
     };
 #endif
     std::shared_ptr<BlinnPhongShader> shader = std::make_shared<BlinnPhongShader>(shaderSpec, GL_FRAGMENT_SHADER);
     shader->SetDiffuse(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
     shader->SetSpecular(glm::vec4(1.f, 1.f, 1.f, 1.f), 40.f);
 
-    //std::shared_ptr<BlinnPhongShader> groundShader = std::make_shared<BlinnPhongShader>(shaderSpec, GL_FRAGMENT_SHADER);
-	std::shared_ptr<EpicShader> groundShader = std::make_shared<EpicShader>(shaderSpec, GL_FRAGMENT_SHADER);
-    //groundShader->SetDiffuse(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
+    std::shared_ptr<BlinnPhongShader> groundShader = std::make_shared<BlinnPhongShader>(shaderSpec, GL_FRAGMENT_SHADER);
+    shader->SetDiffuse(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
 
-
-    std::unique_ptr<EpicLightProperties> lightProperties = make_unique<EpicLightProperties>();
+    std::unique_ptr<LightProperties> lightProperties = make_unique<LightProperties>();
     lightProperties->diffuseColor = glm::vec4(1.f, 1.f, 1.f, 1.f);
     lightProperties->specularColor = glm::vec4(1.f, 1.f, 1.f, 1.f);
 
@@ -172,7 +170,7 @@ void Assignment4::GenericSetupExample(std::shared_ptr<ShaderProgram> shader, std
     groundColor->reserve(4);
 
     for (int i = 0; i < 4; ++i) {
-        groundColor->emplace_back(0.2, 0.8f, 0.8f, 1.f);
+        groundColor->emplace_back(0.89, 0.349f, 0.f, 1.f);
     }
     plane->SetVertexColors(std::move(groundColor));
 

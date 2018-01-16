@@ -21,7 +21,4 @@
 #include "common/Rendering/Textures/CubeMapTexture.h"
 #include "common/Rendering/Shaders/CubeMapShader.h"
 
-#include "common/Rendering/Shaders/EpicShader.h"
-#include "common/Scene/Light/EpicLightProperties.h"
-
 #endif

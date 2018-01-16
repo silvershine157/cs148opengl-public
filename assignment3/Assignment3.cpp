@@ -176,7 +176,6 @@ void Assignment3::SetupExample2()
     sceneObject = std::make_shared<SceneObject>(meshTemplate);
 	sceneObject_another = std::make_shared<SceneObject>(meshTemplate_another);
 
-	//adjust positions
 	sceneObject->Translate(glm::vec3(0,0,3.0));
 
 	sceneObject_another->MultScale(0.1);
