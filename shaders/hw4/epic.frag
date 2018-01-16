@@ -10,7 +10,6 @@ uniform InputMaterial {
     vec4 matDiffuse;
     vec4 matSpecular;
     float matShininess;
-    vec4 matAmbient;
 } material;
 
 struct LightProperties {
@@ -37,7 +36,7 @@ vec4 pointLightSubroutine(vec4 worldPosition, vec3 worldNormal)
 {
     // Normal to the surface
     vec4 N = vec4(normalize(worldNormal), 0.f);
-    
+
     // Direction from the surface to the light
     vec4 L = normalize(pointLight.pointPosition - worldPosition);
 
@@ -50,7 +49,7 @@ vec4 pointLightSubroutine(vec4 worldPosition, vec3 worldNormal)
     // Amount of diffuse reflection
     float d = max(0, dot(N, L));
     vec4 diffuseColor = d * genericLight.diffuseColor * material.matDiffuse;
-    
+
     // Amount of specular reflection
     float s = pow(max(0, dot(N, H)), material.matShininess);
     vec4 specularColor = s * genericLight.specularColor * material.matSpecular;
@@ -60,7 +59,8 @@ vec4 pointLightSubroutine(vec4 worldPosition, vec3 worldNormal)
 
 vec4 globalLightSubroutine(vec4 worldPosition, vec3 worldNormal)
 {
-    return material.matAmbient;
+    // return material.matAmbient;
+    return vec4(0);
 }
 
 vec4 AttenuateLight(vec4 originalColor, vec4 worldPosition)

@@ -8,11 +8,10 @@
 
 #define DISABLE_OPENGL_SUBROUTINES
 
-std::array<const char*, 4> EpicShader::MATERIAL_PROPERTY_NAMES = {
+std::array<const char*, 3> EpicShader::MATERIAL_PROPERTY_NAMES = {
     "InputMaterial.matDiffuse",
     "InputMaterial.matSpecular",
-    "InputMaterial.matShininess",
-    "InputMaterial.matAmbient"
+    "InputMaterial.matShininess"
 };
 const int EpicShader::MATERIAL_BINDING_POINT = 0;
 
@@ -25,7 +24,7 @@ EpicShader::EpicShader(const std::unordered_map<GLenum, std::string>& inputShade
         return;
     }
 
-    SetupUniformBlock<4>("InputMaterial", MATERIAL_PROPERTY_NAMES, materialIndices, materialOffsets, materialStorage, materialBlockLocation, materialBlockSize, materialBuffer);
+    SetupUniformBlock<3>("InputMaterial", MATERIAL_PROPERTY_NAMES, materialIndices, materialOffsets, materialStorage, materialBlockLocation, materialBlockSize, materialBuffer);
     UpdateMaterialBlock();
 
 #ifdef DISABLE_OPENGL_SUBROUTINES
@@ -88,7 +87,6 @@ void EpicShader::UpdateMaterialBlock() const
     memcpy((void*)(materialStorage.data() + materialOffsets[0]), glm::value_ptr(diffuse), sizeof(glm::vec4));
     memcpy((void*)(materialStorage.data() + materialOffsets[1]), glm::value_ptr(specular), sizeof(glm::vec4));
     memcpy((void*)(materialStorage.data() + materialOffsets[2]), &shininess, sizeof(float));
-    memcpy((void*)(materialStorage.data() + materialOffsets[3]), glm::value_ptr(ambient), sizeof(glm::vec4));
 
     if (materialBuffer && materialBlockLocation != GL_INVALID_INDEX) {
         OGL_CALL(glBindBuffer(GL_UNIFORM_BUFFER, materialBuffer));
