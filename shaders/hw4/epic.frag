@@ -30,30 +30,40 @@ uniform float quadraticAttenuation;
 
 uniform int lightingType;
 
+float G_one(vec4 v, vec4 N, float k){
+  float vdN = dot(v, N);
+  return vdN/(vdN*(1-k)+k);
+}
 
-vec4 pointLightSubroutine(vec4 worldPosition, vec3 worldNormal)
-{
-    // Normal to the surface
-    vec4 N = vec4(normalize(worldNormal), 0.f);
+vec4 pointLightSubroutine(vec4 worldPosition, vec3 worldNormal){
+  vec4 diffuseColor = (1-material.matMetallic)*fragmentColor;
+  vec4 specularColor = mix(material.matSpecular*vec4(0.08), fragmentColor, material.matMetallic);
 
-    // Direction from the surface to the light
-    vec4 L = normalize(pointLight.pointPosition - worldPosition);
+  float pi = 3.1415f;
+  vec4 d = diffuseColor / pi;
+  //vec4 d = diffuseColor;
+  float alpha = material.matRoughness * material.matRoughness;
 
-    // Direction from the surface to the eye
-    vec4 E = normalize(cameraPosition - worldPosition);
+  vec4 N = vec4(normalize(worldNormal), 0.f);
+  vec4 L = normalize(pointLight.pointPosition - worldPosition);
+  vec4 V = normalize(cameraPosition - worldPosition);
+  vec4 H = normalize(L + V);
 
-    // Direction of maximum highlights (see paper!)
-    vec4 H = normalize(L + E);
+  float k = pow(material.matRoughness + 1,2.0)/8.0;
+  float G = G_one(L, N, k)*G_one(V, N, k);
+  float D = (alpha*alpha)/(pi*pow(pow(dot(N,H),2.0)*(alpha*alpha-1) + 1, 2.0));
+  float expnt = (-5.55473*dot(V, H)-6.98316)*dot(V, H);
+  vec4 F = specularColor + (vec4(1) - specularColor)*pow(2, expnt);
 
-    // Amount of diffuse reflection
-    float d = max(0, dot(N, L));
-    vec4 diffuseColor = d * genericLight.diffuseColor * material.matDiffuse;
+  vec4 s = (D*G/(4*dot(N, L)*dot(N, V)))*F;
 
-    // Amount of specular reflection
-    float s = pow(max(0, dot(N, H)), material.matShininess);
-    vec4 specularColor = s * genericLight.specularColor * material.matSpecular;
+  //return max(vec4(0), dot(N, L)*(d) + s_);
+  if(dot(N,L)>0){
+    return genericLight.singleColor*dot(N,L)*(d+s);
+  }
+  return vec4(0);
 
-    return diffuseColor + specularColor;
+  //return max(vec4(0), );
 }
 
 vec4 globalLightSubroutine(vec4 worldPosition, vec3 worldNormal)
@@ -65,7 +75,8 @@ vec4 globalLightSubroutine(vec4 worldPosition, vec3 worldNormal)
 vec4 AttenuateLight(vec4 originalColor, vec4 worldPosition)
 {
     float lightDistance = length(pointLight.pointPosition - worldPosition);
-    float attenuation = 1.0 / (constantAttenuation + lightDistance * linearAttenuation + lightDistance * lightDistance * quadraticAttenuation);
+    float num = clamp(1-pow(lightDistance/100, 4), 0, 1);
+    float attenuation = num / (constantAttenuation + lightDistance * linearAttenuation + lightDistance * lightDistance * quadraticAttenuation);
     return originalColor * attenuation;
 }
 
@@ -78,4 +89,5 @@ void main()
         lightingColor = pointLightSubroutine(vertexWorldPosition, vertexWorldNormal);
     }
     finalColor = AttenuateLight(lightingColor, vertexWorldPosition) * fragmentColor;
+    //finalColor = lightingColor;
 }

@@ -118,14 +118,15 @@ void Assignment4::SetupExample1()
     };
 #endif
     std::shared_ptr<EpicShader> shader = std::make_shared<EpicShader>(shaderSpec, GL_FRAGMENT_SHADER);
-    shader->SetRoughness(1.f);
+	shader->SetMetallic(.5f);
+    shader->SetRoughness(.5f);
 	shader->SetSpecular(1.f);
 
     std::shared_ptr<EpicShader> groundShader = std::make_shared<EpicShader>(shaderSpec, GL_FRAGMENT_SHADER);
 	groundShader->SetRoughness(1.f);
 
     std::unique_ptr<EpicLightProperties> lightProperties = make_unique<EpicLightProperties>();
-    lightProperties->singleColor = glm::vec4(1.f, 1.f, 1.f, 1.f);
+    lightProperties->singleColor = glm::vec4(.5f, 1.f, 1.f, 1.f);
 
     pointLight = std::make_shared<Light>(std::move(lightProperties));
     pointLight->SetPosition(glm::vec3(10.f, 10.f, 10.f));
@@ -171,7 +172,7 @@ void Assignment4::GenericSetupExample(std::shared_ptr<ShaderProgram> shader, std
     groundColor->reserve(4);
 
     for (int i = 0; i < 4; ++i) {
-        groundColor->emplace_back(0.89, 0.349f, 0.f, 1.f);
+        groundColor->emplace_back(0.2, 0.549f, 0.5f, 1.f);
     }
     plane->SetVertexColors(std::move(groundColor));
 
