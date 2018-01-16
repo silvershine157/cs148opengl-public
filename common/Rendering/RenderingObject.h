@@ -32,6 +32,8 @@ public:
         Bitangent
     };
 
+	virtual void ReportColors() const;
+
     /*! \brief Constructs a RenderingObject from a shader and all the possible vertex attributes.
      *  \param inputShader The shader that is to be used to render this object. Can be a nullptr and set later.
      *  \param inputPositions The vertex positions. Should not be a null pointer (you can probably get away with it and set it later...).
@@ -240,6 +242,8 @@ protected:
     virtual void CleanupVertexColors();
     virtual void CleanupVertexTangents();
     virtual void CleanupVertexBitangents();
+
+	
 
     GLuint vao;
     GLenum drawMode;

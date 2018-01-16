@@ -7,6 +7,8 @@
 
 #include <algorithm>
 
+bool debug = true;
+
 ForwardRenderer::ForwardRenderer(std::shared_ptr<class Scene> inputScene, std::shared_ptr<class Camera> inputCamera):
     Renderer(std::move(inputScene), std::move(inputCamera))
 {
@@ -35,8 +37,7 @@ void ForwardRenderer::Render()
         bool writeToColor = (p == 0) ? GL_FALSE: GL_TRUE;
         OGL_CALL(glColorMask(writeToColor, writeToColor, writeToColor, writeToColor));
         for (decltype(totalObjects) i = 0; i < totalObjects; ++i) {
-            const SceneObject& sceneObject = scene->GetSceneObject(i); 
-
+            const SceneObject& sceneObject = scene->GetSceneObject(i);
             auto totalRenderObjects = sceneObject.GetTotalRenderObjects();
             for (decltype(totalRenderObjects) r = 0; r < totalRenderObjects; ++r) {
                 const RenderingObject* renderObject = sceneObject.GetRenderObject(r);
@@ -54,9 +55,23 @@ void ForwardRenderer::Render()
                 // Start from the end because the very 'last' light handles the global lighting for the object.
                 // A light that is a nullptr will cause the shader to perform default behavior, whatever that may be.
                 const Light* lightObject = scene->GetLightObject(totalRenderingPasses - p - 1);
+				
                 if (shaderToUse->IsAffectedByLight(lightObject)) {
                     sceneObject.PrepareShaderForRendering(shaderToUse, camera.get(), lightObject);
+					//DEBUG
+					if (debug && p == 1 && i == 100) {
+						std::cout << "<target>" << std::endl;
+						
+						renderObject->ReportColors();
+
+					}
+
                     renderObject->Render();
+
+					if (debug && p == 1 && i == 100) {
+						std::cout << "</target>" << std::endl;
+						debug = false;
+					}
                 }
                 renderObject->EndRender();
 
