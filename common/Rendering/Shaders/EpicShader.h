@@ -42,12 +42,17 @@ public:
      */
     virtual void SetupShaderCamera(const class Camera* camera) const;
 
+
+	virtual void SetRoughness(float inRoughness);
+	virtual void SetSpecular(float inSpecular);
+	virtual void SetMetallic(float inMetallic);
+
     /*! \brief Sets the diffuse color of the material.
      *  \param inDiffuse The desired diffuse color.
      *
      *  Immediately calls UpdateMaterialBlock() to store the new data into the OpenGL buffer.
      */
-    virtual void SetDiffuse(glm::vec4 inDiffuse);
+    //virtual void SetDiffuse(glm::vec4 inDiffuse);
 
     /*! \brief Sets the specular color of the material.
      *  \param inSpecular The desired specular color.
@@ -56,14 +61,14 @@ public:
      *  Immediately calls UpdateMaterialBlock() to store the new data into the OpenGL buffer. For more information
      *  about the shininess parameters, refer to the Wikipedia page on the <a href="https://en.wikipedia.org/wiki/Phong_reflection_model">Phong reflection model</a>.
      */
-    virtual void SetSpecular(glm::vec4 inSpecular, float inShininess);
+    //virtual void SetSpecular(glm::vec4 inSpecular, float inShininess);
 
     /*! \brief Sets the ambient color of the material.
      *  \param inAmbient The desired ambient color.
      *
      *  Immediately calls UpdateMaterialBlock() to store the new data into the OpenGL buffer.
      */
-    virtual void SetAmbient(glm::vec4 inAmbient);
+    //virtual void SetAmbient(glm::vec4 inAmbient);
 
 
     /*! \brief Corresponds to the texture unit that we want to bind the texture to.
@@ -88,13 +93,13 @@ public:
 
     virtual void SetMaxDisplacement(float input);
 
-    virtual void LoadMaterialFromAssimp(std::shared_ptr<struct aiMaterial> assimpMaterial);
+    //virtual void LoadMaterialFromAssimp(std::shared_ptr<struct aiMaterial> assimpMaterial);
 protected:
     // Material Parameters
     virtual void UpdateMaterialBlock() const;
-    glm::vec4 diffuse;
-    glm::vec4 specular;
-    float shininess;
+	float roughness;
+    float specular;
+	float metallic;
     glm::vec4 ambient;
 
     // Material Bindings into the Shader
