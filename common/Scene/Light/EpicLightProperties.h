@@ -6,6 +6,7 @@
 #include "common/Scene/Light/LightProperties.h"
 
 struct EpicLightProperties : public LightProperties{
+	glm::vec4 singleColor;
 };
 
 #endif

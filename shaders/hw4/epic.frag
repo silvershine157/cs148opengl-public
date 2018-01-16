@@ -13,8 +13,7 @@ uniform InputMaterial {
 } material;
 
 struct LightProperties {
-    vec4 diffuseColor;
-    vec4 specularColor;
+    vec4 singleColor;
 };
 uniform LightProperties genericLight;
 

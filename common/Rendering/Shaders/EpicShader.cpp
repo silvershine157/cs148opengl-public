@@ -73,8 +73,7 @@ void EpicShader::SetupShaderLighting(const Light* light) const
 
         // Get the light's properties and pass it into the shader.
         const EpicLightProperties* lightProperty = (EpicLightProperties *) light->GetPropertiesRaw();
-        SetShaderUniform("genericLight.diffuseColor", lightProperty->diffuseColor);
-        SetShaderUniform("genericLight.specularColor", lightProperty->specularColor);
+        SetShaderUniform("genericLight.singleColor", lightProperty->singleColor);
         light->SetupShaderUniforms(this);
     }
     UpdateAttenuationUniforms(light);

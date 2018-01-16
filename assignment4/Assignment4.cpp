@@ -124,9 +124,8 @@ void Assignment4::SetupExample1()
     std::shared_ptr<EpicShader> groundShader = std::make_shared<EpicShader>(shaderSpec, GL_FRAGMENT_SHADER);
 	groundShader->SetRoughness(1.f);
 
-    std::unique_ptr<LightProperties> lightProperties = make_unique<LightProperties>();
-    lightProperties->diffuseColor = glm::vec4(1.f, 1.f, 1.f, 1.f);
-    lightProperties->specularColor = glm::vec4(1.f, 1.f, 1.f, 1.f);
+    std::unique_ptr<EpicLightProperties> lightProperties = make_unique<EpicLightProperties>();
+    lightProperties->singleColor = glm::vec4(1.f, 1.f, 1.f, 1.f);
 
     pointLight = std::make_shared<Light>(std::move(lightProperties));
     pointLight->SetPosition(glm::vec3(10.f, 10.f, 10.f));
