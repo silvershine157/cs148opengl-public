@@ -103,6 +103,8 @@ void Assignment4::HandleWindowResize(float x, float y)
 
 void Assignment4::SetupExample1()
 {
+#define DISABLE_OPENGL_SUBROUTINES
+
     scene->ClearScene();
 #ifndef DISABLE_OPENGL_SUBROUTINES
     std::unordered_map<GLenum, std::string> shaderSpec = {
@@ -111,15 +113,15 @@ void Assignment4::SetupExample1()
     };
 #else
     std::unordered_map<GLenum, std::string> shaderSpec = {
-        { GL_VERTEX_SHADER, "brdf/blinnphong/frag/noSubroutine/blinnphong.vert" },
-        { GL_FRAGMENT_SHADER, "brdf/blinnphong/frag/noSubroutine/blinnphong.frag"}
+        { GL_VERTEX_SHADER, "hw4/epic.vert" },
+        { GL_FRAGMENT_SHADER, "hw4/epic.frag"}
     };
 #endif
-    std::shared_ptr<BlinnPhongShader> shader = std::make_shared<BlinnPhongShader>(shaderSpec, GL_FRAGMENT_SHADER);
+    std::shared_ptr<EpicShader> shader = std::make_shared<EpicShader>(shaderSpec, GL_FRAGMENT_SHADER);
     shader->SetDiffuse(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
     shader->SetSpecular(glm::vec4(1.f, 1.f, 1.f, 1.f), 40.f);
 
-    std::shared_ptr<BlinnPhongShader> groundShader = std::make_shared<BlinnPhongShader>(shaderSpec, GL_FRAGMENT_SHADER);
+    std::shared_ptr<EpicShader> groundShader = std::make_shared<EpicShader>(shaderSpec, GL_FRAGMENT_SHADER);
     shader->SetDiffuse(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
 
     std::unique_ptr<LightProperties> lightProperties = make_unique<LightProperties>();

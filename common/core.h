@@ -5,7 +5,6 @@
 
 #ifndef __CORE__
 #define __CORE__
-
 #include "common/common.h"
 
 #include "common/Rendering/RenderingObject.h"
@@ -20,5 +19,8 @@
 #include "common/Rendering/Textures/Texture2D.h"
 #include "common/Rendering/Textures/CubeMapTexture.h"
 #include "common/Rendering/Shaders/CubeMapShader.h"
+
+#include "common/Rendering/Shaders/EpicShader.h"
+#include "common/Scene/Light/EpicLightProperties.h"
 
 #endif
