@@ -61,6 +61,15 @@ void EpicShader::SetupShaderLighting(const Light* light) const
             SetShaderUniform("lightingType", static_cast<int>(Light::LightType::POINT));
 #endif
             break;
+
+		case Light::LightType::DIRECTIONAL:
+			SetShaderUniform("lightingType", static_cast<int>(Light::LightType::DIRECTIONAL));
+			break;
+
+		case Light::LightType::HEMISPHERE:
+			SetShaderUniform("lightingType", static_cast<int>(Light::LightType::HEMISPHERE));
+			break;
+
         default:
             std::cerr << "WARNING: Light type is not supported. Defaulting to global light. Your output may look wrong. -- Ignoring: " << static_cast<int>(light->GetLightType()) << std::endl;
 #ifndef DISABLE_OPENGL_SUBROUTINES

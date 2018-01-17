@@ -4,6 +4,7 @@
 #define __ASSIGNMENT_4__
 
 #include "common/Application.h"
+#include "common/core.h"
 
 class Assignment4: public Application
 {
@@ -32,6 +33,13 @@ private:
     std::shared_ptr<class Light> hemisphereLight;
     std::shared_ptr<class Light> pointLight;
     std::vector<std::shared_ptr<class SceneObject>> sphereDance;
+
+	struct {
+		std::shared_ptr<EpicShader> shader;
+		float m = 0.5f;
+		float r = 0.5f;
+		float s = 0.5f;
+	} controlConfig;
 };
 
 #endif

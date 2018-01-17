@@ -89,6 +89,48 @@ void Assignment4::HandleInput(SDL_Keysym key, Uint32 state, Uint8 repeat, double
     case SDLK_RCTRL:
         camera->Translate(glm::vec3(camera->GetUpDirection() * -0.3f));
         break;
+	case SDLK_y:
+		controlConfig.m -= 0.05f;
+		if (controlConfig.m < 0) {
+			controlConfig.m = 0;
+		}
+		controlConfig.shader->SetMetallic(controlConfig.m);
+		break;
+	case SDLK_u:
+		controlConfig.m += 0.05f;
+		if (controlConfig.m > 1) {
+			controlConfig.m = 1;
+		}
+		controlConfig.shader->SetMetallic(controlConfig.m);
+		break;
+	case SDLK_h:
+		controlConfig.r -= 0.05f;
+		if (controlConfig.r < 0) {
+			controlConfig.r = 0;
+		}
+		controlConfig.shader->SetRoughness(controlConfig.r);
+		break;
+	case SDLK_j:
+		controlConfig.r += 0.05f;
+		if (controlConfig.r > 1) {
+			controlConfig.r = 1;
+		}
+		controlConfig.shader->SetRoughness(controlConfig.r);
+		break;
+	case SDLK_n:
+		controlConfig.s -= 0.05f;
+		if (controlConfig.s < 0) {
+			controlConfig.s = 0;
+		}
+		controlConfig.shader->SetSpecular(controlConfig.s);
+		break;
+	case SDLK_m:
+		controlConfig.s += 0.05f;
+		if (controlConfig.s > 1) {
+			controlConfig.s = 1;
+		}
+		controlConfig.shader->SetSpecular(controlConfig.s);
+		break;
     default:
         Application::HandleInput(key, state, repeat, timestamp, deltaTime);
         break;
@@ -117,10 +159,10 @@ void Assignment4::SetupExample1()
         { GL_FRAGMENT_SHADER, "hw4/epic.frag"}
     };
 #endif
-    std::shared_ptr<EpicShader> shader = std::make_shared<EpicShader>(shaderSpec, GL_FRAGMENT_SHADER);
-	shader->SetMetallic(0.f);
-    shader->SetRoughness(.3f);
-	shader->SetSpecular(1.f);
+	controlConfig.shader = std::make_shared<EpicShader>(shaderSpec, GL_FRAGMENT_SHADER);
+	controlConfig.shader->SetMetallic(controlConfig.m);
+	controlConfig.shader->SetRoughness(controlConfig.r);
+	controlConfig.shader->SetSpecular(controlConfig.s);
 
     std::shared_ptr<EpicShader> groundShader = std::make_shared<EpicShader>(shaderSpec, GL_FRAGMENT_SHADER);
 	groundShader->SetRoughness(1.f);
@@ -130,22 +172,22 @@ void Assignment4::SetupExample1()
     lightProperties = make_unique<EpicLightProperties>();
     lightProperties->singleColor = glm::vec4(3.f, 0.f, 0.f, 1.f);
     pointLight = std::make_shared<Light>(std::move(lightProperties));
-    pointLight->SetPosition(glm::vec3(10.f, 20.f, 10.f));
+    pointLight->SetPosition(glm::vec3(20.f, 13.f, 20.f));
     scene->AddLight(pointLight);
 
 	lightProperties = make_unique<EpicLightProperties>();
 	lightProperties->singleColor = glm::vec4(0.f, 3.f, 0.f, 1.f);
 	pointLight = std::make_shared<Light>(std::move(lightProperties));
-	pointLight->SetPosition(glm::vec3(60.f, 20.f, 20.f));
+	pointLight->SetPosition(glm::vec3(60.f, 13.f, 30.f));
 	scene->AddLight(pointLight);
 
 	lightProperties = make_unique<EpicLightProperties>();
 	lightProperties->singleColor = glm::vec4(0.f, 0.f, 3.f, 1.f);
 	pointLight = std::make_shared<Light>(std::move(lightProperties));
-	pointLight->SetPosition(glm::vec3(20.f, 20.f, 60.f));
+	pointLight->SetPosition(glm::vec3(30.f, 13.f, 60.f));
 	scene->AddLight(pointLight);
 
-    GenericSetupExample(shader, groundShader);
+    GenericSetupExample(controlConfig.shader, groundShader);
 
 }
 

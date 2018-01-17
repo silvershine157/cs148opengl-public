@@ -22,6 +22,16 @@ struct PointLight {
 };
 uniform PointLight pointLight;
 
+struct HemisphereLight {
+  vec4 secondColor;
+};
+uniform HemisphereLight hemisphereLight;
+
+struct DirectionalLight{
+  vec4 direction;
+};
+uniform DirectionalLight directionalLight;
+
 uniform vec4 cameraPosition;
 
 uniform float constantAttenuation;
@@ -86,6 +96,8 @@ void main()
     if (lightingType == 0) {
         lightingColor = globalLightSubroutine(vertexWorldPosition, vertexWorldNormal);
     } else if (lightingType == 1) {
+        lightingColor = pointLightSubroutine(vertexWorldPosition, vertexWorldNormal);
+    } else if (lightingType == 2) {
         lightingColor = pointLightSubroutine(vertexWorldPosition, vertexWorldNormal);
     }
     finalColor = AttenuateLight(lightingColor, vertexWorldPosition) * fragmentColor;
