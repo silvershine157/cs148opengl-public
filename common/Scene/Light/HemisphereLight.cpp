@@ -7,7 +7,7 @@ const std::string HemisphereLight::LIGHT_UNIFORM_NAME = "hemisphereLight";
 HemisphereLight::HemisphereLight(std::unique_ptr<LightProperties> inProperties, glm::vec4 secondColor, LightType type):
     Light(move(inProperties), type), secondColor(secondColor)
 {
-
+	
 }
 
 HemisphereLight::~HemisphereLight()

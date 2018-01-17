@@ -62,7 +62,7 @@ vec4 pointLightSubroutine(vec4 worldPosition, vec3 worldNormal, vec4 lightDirect
   if(isHemisphere){
     //hemisphere
     L = N;
-    lightColor = mix(genericLight.singleColor, hemisphereLight.secondColor, clamp(0.5+0.5*dot(N, vec4(0,1,0,0)),0,1));
+    lightColor = mix(hemisphereLight.secondColor, genericLight.singleColor, clamp(0.5+0.5*dot(N, vec4(0,1,0,0)),0,1));
   }
   else if(length(lightDirection)<0.1){
     //pointlight
@@ -111,11 +111,13 @@ void main()
         lightingColor = globalLightSubroutine(vertexWorldPosition, vertexWorldNormal);
     } else if (lightingType == 1) {
         lightingColor = pointLightSubroutine(vertexWorldPosition, vertexWorldNormal, vec4(0), false);
+        finalColor = AttenuateLight(lightingColor, vertexWorldPosition) * fragmentColor;
+        return;
     } else if (lightingType == 2) {
         vec4 Lhat = normalize(directionalLight.direction);
         lightingColor = pointLightSubroutine(vertexWorldPosition, vertexWorldNormal, Lhat, false);
     } else if (lightingType == 3){
         lightingColor = pointLightSubroutine(vertexWorldPosition, vertexWorldNormal, vec4(0), true);
     }
-    finalColor = AttenuateLight(lightingColor, vertexWorldPosition) * fragmentColor;
+    finalColor = lightingColor * fragmentColor;
 }

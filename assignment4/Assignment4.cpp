@@ -31,7 +31,7 @@ glm::vec2 Assignment4::GetWindowSize() const
 
 void Assignment4::SetupScene()
 {
-    SetupExample3();
+    SetupExample4();
 }
 
 void Assignment4::SetupCamera()
@@ -142,6 +142,49 @@ void Assignment4::HandleWindowResize(float x, float y)
     Application::HandleWindowResize(x, y);
     std::static_pointer_cast<PerspectiveCamera>(camera)->SetAspectRatio(x / y);
 }
+
+void Assignment4::SetupExample4() {
+
+#define DISABLE_OPENGL_SUBROUTINES
+	scene->ClearScene();
+	std::unordered_map<GLenum, std::string> shaderSpec = {
+		{ GL_VERTEX_SHADER, "hw4/epic.vert" },
+	{ GL_FRAGMENT_SHADER, "hw4/epic.frag" }
+	};
+
+	controlConfig.shader = std::make_shared<EpicShader>(shaderSpec, GL_FRAGMENT_SHADER);
+	controlConfig.shader->SetMetallic(controlConfig.m);
+	controlConfig.shader->SetRoughness(controlConfig.r);
+	controlConfig.shader->SetSpecular(controlConfig.s);
+
+	std::shared_ptr<EpicShader> groundShader = std::make_shared<EpicShader>(shaderSpec, GL_FRAGMENT_SHADER);
+	groundShader->SetMetallic(0.f);
+	groundShader->SetRoughness(1.f);
+	groundShader->SetSpecular(1.f);
+
+	std::unique_ptr<EpicLightProperties> lightProperties;
+
+	lightProperties = make_unique<EpicLightProperties>();
+	lightProperties->singleColor = glm::vec4(.5f, 1.f, 1.f, 1.f);
+	pointLight = std::make_shared<HemisphereLight>(std::move(lightProperties), glm::vec4(0.1f, 0.7f, 0.f, 1.f));
+	pointLight->SetPosition(glm::vec3(20.f, 13.f, 20.f));
+	scene->AddLight(pointLight);
+
+	lightProperties = make_unique<EpicLightProperties>();
+	lightProperties->singleColor = glm::vec4(1.f, 1.f, .5f, 1.f);
+	pointLight = std::make_shared<DirectionalLight>(std::move(lightProperties), glm::vec3(5.f, 3.f, -5.f));
+	pointLight->SetPosition(glm::vec3(20.f, 13.f, 20.f));
+	scene->AddLight(pointLight);
+
+	lightProperties = make_unique<EpicLightProperties>();
+	lightProperties->singleColor = glm::vec4(0.f, 1.f, 1.f, 1.f);
+	pointLight = std::make_shared<Light>(std::move(lightProperties));
+	pointLight->SetPosition(glm::vec3(20.f, 13.f, 20.f));
+	scene->AddLight(pointLight);
+
+	GenericSetupExample(controlConfig.shader, groundShader);
+}
+
 
 void Assignment4::SetupExample3() {
 
@@ -281,7 +324,7 @@ void Assignment4::GenericSetupExample(std::shared_ptr<ShaderProgram> shader, std
     groundColor->reserve(4);
 
     for (int i = 0; i < 4; ++i) {
-        groundColor->emplace_back(1, 1.f, 1.f, 1.f);
+        groundColor->emplace_back(0.5, 0.5f, 0.5f, 1.f);
     }
     plane->SetVertexColors(std::move(groundColor));
 
