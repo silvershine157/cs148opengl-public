@@ -45,7 +45,7 @@ float G_one(vec4 v, vec4 N, float k){
   return vdN/(vdN*(1-k)+k);
 }
 
-vec4 pointLightSubroutine(vec4 worldPosition, vec3 worldNormal){
+vec4 pointLightSubroutine(vec4 worldPosition, vec3 worldNormal, vec4 lightDirection){
   vec4 diffuseColor = (1-material.matMetallic)*fragmentColor;
   vec4 specularColor = mix(material.matSpecular*vec4(0.08), fragmentColor, material.matMetallic);
 
@@ -55,7 +55,13 @@ vec4 pointLightSubroutine(vec4 worldPosition, vec3 worldNormal){
   float alpha = material.matRoughness * material.matRoughness;
 
   vec4 N = vec4(normalize(worldNormal), 0.f);
-  vec4 L = normalize(pointLight.pointPosition - worldPosition);
+
+  vec4 L;
+  if(length(lightDirection)<0.1){
+    L = normalize(pointLight.pointPosition - worldPosition);
+  }else{
+    L = lightDirection; //already normalized
+  }
   vec4 V = normalize(cameraPosition - worldPosition);
   vec4 H = normalize(L + V);
 
@@ -67,13 +73,10 @@ vec4 pointLightSubroutine(vec4 worldPosition, vec3 worldNormal){
 
   vec4 s = (D*G/(4*dot(N, L)*dot(N, V)))*F;
 
-  //return max(vec4(0), dot(N, L)*(d) + s_);
   if(dot(N,L)>0){
     return genericLight.singleColor*dot(N,L)*(d+s);
   }
   return vec4(0);
-
-  //return max(vec4(0), );
 }
 
 vec4 globalLightSubroutine(vec4 worldPosition, vec3 worldNormal)
@@ -96,10 +99,10 @@ void main()
     if (lightingType == 0) {
         lightingColor = globalLightSubroutine(vertexWorldPosition, vertexWorldNormal);
     } else if (lightingType == 1) {
-        lightingColor = pointLightSubroutine(vertexWorldPosition, vertexWorldNormal);
+        lightingColor = pointLightSubroutine(vertexWorldPosition, vertexWorldNormal, vec4(0));
     } else if (lightingType == 2) {
-        lightingColor = pointLightSubroutine(vertexWorldPosition, vertexWorldNormal);
+        vec4 Lhat = normalize(directionalLight.direction);
+        lightingColor = pointLightSubroutine(vertexWorldPosition, vertexWorldNormal, Lhat);
     }
     finalColor = AttenuateLight(lightingColor, vertexWorldPosition) * fragmentColor;
-    //finalColor = lightingColor;
 }

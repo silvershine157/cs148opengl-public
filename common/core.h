@@ -22,5 +22,6 @@
 
 #include "common/Rendering/Shaders/EpicShader.h"
 #include "common/Scene/Light/EpicLightProperties.h"
+#include "common/Scene/Light/DirectionalLight.h"
 
 #endif
