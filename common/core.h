@@ -23,5 +23,6 @@
 #include "common/Rendering/Shaders/EpicShader.h"
 #include "common/Scene/Light/EpicLightProperties.h"
 #include "common/Scene/Light/DirectionalLight.h"
+#include "common/Scene/Light/HemisphereLight.h"
 
 #endif

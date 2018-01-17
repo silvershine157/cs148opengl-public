@@ -26,6 +26,7 @@ private:
 
     virtual void SetupExample1();
 	virtual void SetupExample2();
+	virtual void SetupExample3();
     virtual void GenericSetupExample(std::shared_ptr<class ShaderProgram> shader, std::shared_ptr<ShaderProgram> groundShader);
 
     virtual void SetupCamera();
